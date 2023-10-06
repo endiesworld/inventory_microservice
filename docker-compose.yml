@@ -32,7 +32,7 @@ services:
       args:
         - stage=${STAGE:-none}
     volumes:
-        - ./inventory_services/app:/app
+        - ./payment_services/app:/app
     entrypoint: "./entrypoint.sh"
     command: "dev"
     ports:
