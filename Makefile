@@ -1,7 +1,10 @@
 dependencies:
-	@pip-compile requirements.in -o requirements.txt
-	@pip-compile requirements.in requirements-dev.in -o requirements-dev.txt
-	pip-sync requirements-dev.txt
+	@pip-compile ./inventory_services/requirements.in -o ./inventory_services/requirements.txt
+	@pip-compile ./inventory_services/requirements.in ./inventory_services/requirements-dev.in -o ./inventory_services/requirements-dev.txt
+	pip-sync ./inventory_services/requirements-dev.txt
+	@pip-compile ./payment_services/requirements.in -o ./payment_services/requirements.txt
+	@pip-compile ./payment_services/requirements.in ./payment_services/requirements-dev.in -o ./payment_services/requirements-dev.txt
+	pip-sync ./payment_services/requirements-dev.txt
 
 lint: black-src isort-src ruff-src
 
