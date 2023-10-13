@@ -21,13 +21,11 @@ router.prefix = "/api/payment"
         status.HTTP_200_OK,
     },
 )
-async def list(
+async def list_payment(
     request: Request,
     name: Optional[str] = None,
-
 ):
     """
-
     """
     return {"response": "OK",
             "data": "To be provided soon"}

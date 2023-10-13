@@ -6,13 +6,22 @@ ENV STAGE=$stage
 ENV PYTHONWRITEBYTECODE 1
 ENV PYTHONBUFFERED 1
 
-COPY requirements*.txt entrypoint.sh /
+WORKDIR /payment_services
+
+COPY /requirements*.txt .
 RUN if [ "${STAGE}" = "dev" ]; then pip install -r requirements-dev.txt; else pip install -r requirements.txt; fi
 
 RUN apt-get update -y && apt-get install -y iputils-ping sudo telnet
 
-USER 1000
-COPY app app
+EXPOSE 5002
 
-ENTRYPOINT ["/entrypoint.sh"]
+
+COPY /app .
+# Use the provided entrypoint script
+COPY /entrypoint.sh .
+RUN chmod +x /payment_services/entrypoint.sh
+
+# Run your application using the provided entrypoint script
+ENTRYPOINT ["/payment_services/entrypoint.sh"]
+
 CMD ["start"]

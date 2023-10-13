@@ -3,18 +3,16 @@ services:
   inventory-services-backend:
     restart: unless-stopped
     env_file:
-      - .env
+      - ./inventory_services/.env
     build:
-      context: ./
-      dockerfile: ./Dockerfile
+      context: ./inventory_services
+      dockerfile: Dockerfile
       labels:
         - inventory-services-backend
       args:
         - stage=${STAGE:-none}
     volumes:
-        - ./inventory_services/app:/app
-    entrypoint: "./entrypoint.sh"
-    command: "dev"
+        - ./inventory_services/app:/inventory_services/app
     ports:
       - ${PORT:-5000}:${PORT:-5000}
     depends_on:
@@ -23,18 +21,16 @@ services:
   payment-services-backend:
     restart: unless-stopped
     env_file:
-      - .env
+      - ./payment_services/.env
     build:
-      context: ./
-      dockerfile: ./Dockerfile
+      context: ./payment_services
+      dockerfile: Dockerfile
       labels:
         - payment-services-backend
       args:
         - stage=${STAGE:-none}
     volumes:
-        - ./payment_services/app:/app
-    entrypoint: "./entrypoint.sh"
-    command: "dev"
+        - ./payment_services/app:/payment_services/app
     ports:
       - ${PORT:-5002}:${PORT:-5002}
     depends_on:

@@ -95,6 +95,7 @@ pydantic==2.0.3
     #   fastapi
     #   redis-om
 pydantic-core==2.3.0
+pydantic-settings
     # via pydantic
 pyhumps==3.8.0
     # via -r ./payment_services/requirements.in

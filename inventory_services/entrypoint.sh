@@ -2,7 +2,6 @@
 
 ARG="$@"
 
-cd app
 
 case "$ARG" in
     start)

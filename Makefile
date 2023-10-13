@@ -57,7 +57,7 @@ daemon: stop
 	docker-compose up --build -d
 
 dev: stop
-	STAGE=dev docker-compose -f docker-compose-with-local-db.yml up --build
+	STAGE=dev docker-compose -f docker-compose.yml up --build
 
 console:
 	docker-compose exec inventory-management-backend python -m asyncio

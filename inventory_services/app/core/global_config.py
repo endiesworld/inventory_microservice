@@ -2,7 +2,7 @@ import os
 from distutils.util import strtobool
 from typing import List, Optional
 
-from pydantic import BaseSettings
+from pydantic_settings import BaseSettings
 
 INIT_API_VERSION = "0.0.1"
 INIT_API_ALGORITHM = "HS256"

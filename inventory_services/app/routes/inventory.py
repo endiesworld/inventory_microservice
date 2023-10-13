@@ -13,22 +13,12 @@ router.prefix = "/api/inventory"
 
 
 @router.get(
-    "",
+    "/",
     tags=["Inventory-services"],
     name="inventory:list",
-    operation_id="inventory_list",
-    responses={
-        status.HTTP_200_OK,
-    },
+    operation_id="inventory_list"
 )
-async def list(
-    request: Request,
-    name: Optional[str] = None,
-
-):
-    """
-
-    """
+async def list_(request: Request,):
     return {"response": "OK",
             "data": "To be provided soon"}
 

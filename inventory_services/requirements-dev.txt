@@ -96,6 +96,7 @@ pydantic==2.0.3
     #   redis-om
 pydantic-core==2.3.0
     # via pydantic
+pydantic-settings
 pyhumps==3.8.0
     # via -r ./inventory_services/requirements.in
 pyjwt==2.8.0
