@@ -33,7 +33,7 @@ from app.modules import application_module
 global consumer
 
 app = FastAPI(
-    title="Duro API",
+    title="Inventory API",
     version=app_config.API_VERSION,
     docs_url="/api/docs",
     redoc_url="/api/redoc",

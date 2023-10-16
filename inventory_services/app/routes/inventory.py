@@ -18,7 +18,20 @@ router.prefix = "/api/inventory"
     name="inventory:list",
     operation_id="inventory_list"
 )
-async def list_(request: Request,):
+async def list_(request: Request,name: Optional[str] = None,):
+    return {"response": "OK",
+            "data": "To be provided soon"}
+
+@router.put(
+    "/",
+    tags=["Inventory-services"],
+    name="inventory:list",
+    operation_id="inventory_list"
+)
+async def update_list(request: Request,):
+    """
+        This spot is to be used for comments and description.
+    """
     return {"response": "OK",
             "data": "To be provided soon"}
 
