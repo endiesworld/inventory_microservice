@@ -6,10 +6,10 @@ from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
 # USE THIS PIECE TO CONNECT TO AN EXTERNAL DATABASE
-# from app.core import (
-#     create_start_app_handler,
-#     create_stop_app_handler,
-# )
+from app.core import (
+    create_start_app_handler,
+    # create_stop_app_handler,
+)
 
 
 from app.core.global_config import app_config
@@ -136,7 +136,7 @@ async def invalid_account_user_state_exception(
 app.add_event_handler("startup", setup_logging)
 
 # Database Connection
-# app.add_event_handler("startup", create_start_app_handler(app))
+app.add_event_handler("startup", create_start_app_handler(app))
 # app.add_event_handler("shutdown", create_stop_app_handler(app))
 
 

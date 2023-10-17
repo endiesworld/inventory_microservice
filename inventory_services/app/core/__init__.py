@@ -1,15 +1,15 @@
-# from typing import Callable
+from typing import Callable
 
-# from fastapi import FastAPI
+from fastapi import FastAPI
 
 
-# def create_start_app_handler(app: FastAPI) -> Callable:
-#     from app.db import connect_to_db
+def create_start_app_handler(app: FastAPI) -> Callable:
+    from app.db import connect_to_db
 
-#     async def start_app() -> None:
-#         await connect_to_db(app)
+    async def start_app() -> None:
+        await connect_to_db(app)
 
-#     return start_app
+    return start_app
 
 
 # def create_stop_app_handler(app: FastAPI) -> Callable:

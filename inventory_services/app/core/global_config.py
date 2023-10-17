@@ -15,15 +15,11 @@ class GlobalConfig(BaseSettings):
     """Global configurations."""
 
     ENV_STATE: Optional[str] = os.environ.get("ENV_STATE", "dev")
-
     SECRET_KEY: Optional[str] = os.environ.get("SECRET_KEY", None)
-    POSTGRES_USER: Optional[str] = os.environ.get("POSTGRES_USER", None)
-    POSTGRES_PASSWORD: Optional[str] = os.environ.get("POSTGRES_PASSWORD", None)
-    POSTGRES_OP_USER: Optional[str] = os.environ.get("POSTGRES_OP_USER", None)
-    POSTGRES_OP_PASSWORD: Optional[str] = os.environ.get("POSTGRES_OP_PASSWORD", None)
-    POSTGRES_SERVER: Optional[str] = os.environ.get("POSTGRES_SERVER", None)
-    POSTGRES_PORT: Optional[str] = os.environ.get("POSTGRES_PORT", None)
-    POSTGRES_DB: Optional[str] = os.environ.get("POSTGRES_DB", None)
+    
+    REDIS_PORT: Optional[str] = os.environ.get("REDIS_PORT", None)
+    REDIS_CONTAINER_NAME: Optional[str] = os.environ.get("REDIS_CONTAINER_NAME", None)
+
     APPLICATION_ID: Optional[str] = os.environ.get("APPLICATION_ID", INIT_APPLICATION_ID)
     APPLICATION_CALLBACK_URL: Optional[str] = os.environ.get(
         "APPLICATION_CALLBACK_URL", ""
@@ -44,15 +40,8 @@ class GlobalConfig(BaseSettings):
     )
     APPLICATION_LOGO: Optional[str] = os.environ.get("APPLICATION_LOGO", "")
 
-    MAILER_FROM: Optional[str] = os.environ.get("MAILER_FROM", "root@localhost")
-    IP_LOGGING: bool = strtobool(os.environ.get("IP_LOGGING", "False"))
 
-    # SES Email
-    AWS_ACCESS_KEY_ID: Optional[str] = os.environ.get("AWS_ACCESS_KEY_ID", None)
-    AWS_SECRET_ACCESS_KEY: Optional[str] = os.environ.get("AWS_SECRET_ACCESS_KEY", None)
-    AWS_REGION: Optional[str] = os.environ.get("AWS_REGION", None)
-    SENDER_NAME: Optional[str] = os.environ.get("SENDER_NAME", "inventory_services")
-    SENDER_EMAIL: Optional[str] = os.environ.get("SENDER_EMAIL", None)
+    
 
     
 app_config = GlobalConfig()
