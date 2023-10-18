@@ -1,5 +1,5 @@
-from fastapi import Request
+from redis_om import redis 
 
-# class BaseRepository:
-#     def __init__(self, db: Database) -> None:
-#         self.db = db
+class BaseRepository:
+    def __init__(self, db: redis) -> None:
+        self.db = db

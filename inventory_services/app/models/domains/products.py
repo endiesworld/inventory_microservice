@@ -5,9 +5,18 @@ from fastapi import Request
 from app.models.core import CoreModel
 from redis_om import HashModel
 
+from pydantic import BaseModel
 
 
-class NewProduct(HashModel):
+class NewProduct(BaseModel):
+    name: str
+    price: float
+    quantity: int
+        
+class Product(BaseModel):
+    ...
+    
+class NewProductModel(HashModel):
     name: str
     price: float
     quantity: int
@@ -17,6 +26,6 @@ class NewProduct(HashModel):
             database = request.state.db
 
 
-class Product():
-    ...
+# class ProductModel(BaseModel):
+#     ...
 

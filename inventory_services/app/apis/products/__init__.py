@@ -1,1 +1,1 @@
-from .main import fn_create_product
+from .main import fn_create_product, fn_get_products
