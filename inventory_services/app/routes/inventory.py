@@ -28,11 +28,13 @@ def get_products(
     product_repo: ProductsRepository= Depends(
         get_repository(ProductsRepository)
     )
-    )-> Optional[Product]:
+    )-> List[Product]:
     """
         Get all products in the inventory.
     """
-    return fn_get_products(product_repo, request)
+    result = fn_get_products(product_repo, request)
+    print(f"RESULT FROM OPS: {result}")
+    return result
 
 
 @router.post(

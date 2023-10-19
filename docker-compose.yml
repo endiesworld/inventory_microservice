@@ -12,6 +12,8 @@ services:
     volumes:
         - ./inventory_services/app:/inventory_services/app
     command: "dev"
+    networks:
+      - my-network
     ports:
       - ${PORT:-5000}:${PORT:-5000}
     depends_on:
@@ -29,6 +31,8 @@ services:
     volumes:
         - ./payment_services/app:/payment_services/app
     command: "dev"
+    networks:
+      - my-network
     ports:
       - ${PORT:-5002}:${PORT:-5002}
     depends_on:
@@ -45,9 +49,13 @@ services:
       interval: 5s
       timeout: 5s
       retries: 20
+    networks:
+      - my-network
     ports:
       - "6379:6379"
       - "8001:8001"
 
 volumes:
   redis_stack_data:
+networks:
+  my-network:
