@@ -10,7 +10,6 @@ from . import crud
 async def fn_create_product(
     new_product: NewProduct,
     product_repo: ProductsRepository,
-    request: Request
 ) -> Optional[Product]:
     
     new_product = NewProductModel(
@@ -18,8 +17,8 @@ async def fn_create_product(
         price = new_product.price,
         quantity = new_product.quantity
     )
-    return await crud.fn_create_product(new_product, product_repo, request)
+    return await crud.fn_create_product(new_product, product_repo)
 
-def fn_get_products(product_repo: ProductsRepository,request: Request)-> Optional[List[Product]]:
+async def fn_get_products(product_repo: ProductsRepository)-> Optional[List[Product]]:
     
-    return crud.fn_get_products(product_repo, request)
+    return await crud.fn_get_products(product_repo)

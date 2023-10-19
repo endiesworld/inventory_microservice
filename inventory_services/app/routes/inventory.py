@@ -13,8 +13,6 @@ from app.db.repositories import ProductsRepository
 router = APIRouter()
 router.prefix = "/api/inventory"
 
-# platform_user = global_state.system_users.current_user(active=True, verified=True)
-
 
 @router.get(
     "/products",
@@ -23,17 +21,17 @@ router.prefix = "/api/inventory"
     operation_id="inventory_list_all_products",
     status_code=status.HTTP_200_OK,
 )
-def get_products(
+async def get_products(
     request: Request,
     product_repo: ProductsRepository= Depends(
         get_repository(ProductsRepository)
     )
-    )-> List[Product]:
+    ):
     """
         Get all products in the inventory.
     """
-    result = fn_get_products(product_repo, request)
-    print(f"RESULT FROM OPS: {result}")
+    result = await fn_get_products(product_repo)
+    
     return result
 
 
@@ -54,9 +52,9 @@ async def create_product(
     product_repo: ProductsRepository= Depends(
         get_repository(ProductsRepository)
     ),
-    ):
+    )->Optional[Product]:
     """
         Add new product in the inventory.
     """
-    return await fn_create_product(new_product, product_repo, request)
+    return await fn_create_product(new_product, product_repo)
 

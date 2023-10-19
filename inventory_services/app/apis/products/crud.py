@@ -7,11 +7,10 @@ from fastapi import Request
 async def fn_create_product(
     new_product: NewProductModel,
     product_repo: ProductsRepository,
-    request: Request
 ) -> Optional[Product]:
 
-    return await product_repo.create_product(new_product=new_product, request=request)
+    return await product_repo.create_product(new_product=new_product)
 
-def fn_get_products(product_repo: ProductsRepository,request: Request)-> Optional[List[Product]]:
+async def fn_get_products(product_repo: ProductsRepository)-> Optional[List[Product]]:
     
-    return product_repo.get_products(request=request)
+    return await product_repo.get_products()
