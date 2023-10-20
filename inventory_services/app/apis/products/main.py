@@ -1,9 +1,9 @@
 
-from typing import Optional, List
+from typing import Optional, List, Any
 
 from app.models.domains.products import NewProduct, Product, NewProductModel
+from app.models.core import DeletedCount
 from app.db.repositories import ProductsRepository
-from fastapi import Request
 
 from . import crud
 
@@ -22,3 +22,18 @@ async def fn_create_product(
 async def fn_get_products(product_repo: ProductsRepository)-> Optional[List[Product]]:
     
     return await crud.fn_get_products(product_repo)
+
+
+async def fn_get_product_by_id(
+    id: str,
+    product_repo: ProductsRepository
+)-> Optional[Product]:
+    
+    return await crud.fn_get_product_by_id(id, product_repo)
+
+async def fn_delete_product_by_id(
+    id: str,
+    product_repo: ProductsRepository
+)-> Optional[DeletedCount]:
+    print("IN THE DELETS ROUTE==> MAIN")
+    return await crud.fn_delete_product_by_id(id, product_repo)
