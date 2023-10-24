@@ -1,7 +1,7 @@
 import os
 
 from fastapi import FastAPI
-from redis_om import HashModel, get_redis_connection
+from redis_om import get_redis_connection
 from loguru import logger
 
 from app.core.global_config import app_config
@@ -20,7 +20,7 @@ async def connect_to_db(app: FastAPI) -> None:
     try:
         app.state.db = database
         logger.info(
-            "--- DB CONNECTION ESTABLISHED TO {}---".format(app_config.REDIS_CONTAINER_NAME)
+            "--- DB CONNECTION ESTABLISHED FROM INVENTORY SERVICES TO {}---".format(app_config.REDIS_CONTAINER_NAME)
         )
     except Exception as e:
         logger.warning("--- DB CONNECTION ERROR ---")
