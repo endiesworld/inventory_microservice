@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Any
 
 from fastapi import APIRouter, Depends, Request, status
 
@@ -54,7 +54,7 @@ async def create_order(
     order_repo: OrdersRepository= Depends(
         get_repository(OrdersRepository)
     ),
-    )->Optional[OrderModel]:
+    )->Optional[NewOrder]:
     """
         Create new order.
     """
