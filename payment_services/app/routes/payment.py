@@ -45,20 +45,20 @@ router.prefix = "/api/payment"
     tags=["payment-services"],
     name="payment:list",
     operation_id="payment_list",
-    responses={status.HTTP_201_CREATED: {"model": NewOrder}},
+    responses={status.HTTP_201_CREATED: {"model": OrderModel}},
     status_code=status.HTTP_201_CREATED,
 )
 async def create_order(
     request: Request,
-    new_order: NewOrder,
+    product_id: str,
     order_repo: OrdersRepository= Depends(
         get_repository(OrdersRepository)
     ),
-    )->Optional[NewOrder]:
+    )->Optional[OrderModel]:
     """
         Create new order.
     """
-    return await fn_create_order(new_order, order_repo)
+    return await fn_create_order(product_id, order_repo)
 
 
 # @router.get(

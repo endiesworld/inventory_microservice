@@ -9,6 +9,8 @@ from app.core.global_config import app_config
 db_host, db_port = (app_config.REDIS_CONTAINER_NAME, app_config.REDIS_PORT)
 database = get_redis_connection(host=db_host, port=db_port, decode_responses=True)
 
+COMMISSION = 0.05
+PRICE_FACTOR = 1.05
 
 class PaymentStatusEnum(str, Enum):
     pending = "pending"
@@ -40,5 +42,8 @@ class NewOrderModel(HashModel):
 
 
 class OrderModel(NewOrder):
+    id: str
+    
+class RedisOrderModel(NewOrderModel):
     id: str
     
