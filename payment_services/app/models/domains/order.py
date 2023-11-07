@@ -45,5 +45,5 @@ class OrderModel(NewOrder):
     id: str
     
 class RedisOrderModel(NewOrderModel):
-    id: str
+    ...
     

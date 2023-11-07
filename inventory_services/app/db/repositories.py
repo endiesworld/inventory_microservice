@@ -23,7 +23,7 @@ class ProductsRepository(BaseRepository):
         try:
             product =  NewProductModel.get(id)
         except NotFoundError:
-            raise NotFoundException(message="Sorry, no produc with this Id was found.")
+            raise NotFoundException(message="Sorry, no product with this Id was found.")
         
         product_ = Product(
             id=product.pk,

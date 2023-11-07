@@ -1,10 +1,11 @@
 
+import time
 from typing import Optional, List
 import requests
 
+from fastapi.background import BackgroundTasks
+
 from app.models.domains.order import (
-    NewOrder, 
-    RedisOrderModel,
     OrderModel, 
     NewOrderModel, 
     PaymentStatusEnum, 
@@ -16,9 +17,12 @@ from app.db.repositories import OrdersRepository
 
 from . import crud
 
+
+
 async def fn_create_order(
     product_id: str,
     order_repo: OrdersRepository,
+    background_task: BackgroundTasks,
 ) -> Optional[OrderModel]:
     
     id = product_id
@@ -36,29 +40,26 @@ async def fn_create_order(
         quantity=product['quantity'],
         status=PaymentStatusEnum.pending,
     )
-        order = await crud.fn_create_order(new_order, order_repo)
+        order_model, order = await crud.fn_create_order(new_order, order_repo)
         
-        order = RedisOrderModel(
-            id=order.id,
-            product_id=order.product_id,
-            product_name=order.product_name,
-            price=order.price,
-            commission=order.commission,
-            total=order.total,
-            quantity=order.quantity,
-            status=order.status
-        )
+        background_task.add_task(complete_order, order, order_repo)
         
-        order = await complete_order(order, order_repo)
-        return order
+        return order_model
     
     else:
         return {"error": "Failed to fetch data from the API"}
     
 
 
-async def complete_order(order: RedisOrderModel, order_repo:OrdersRepository)->OrderModel:
+async def complete_order(order: NewOrderModel, order_repo:OrdersRepository):
+    time.sleep(5)
     order.status = PaymentStatusEnum.completed
-    return await crud.fn_create_order(order, order_repo)
+    await crud.fn_create_order(order, order_repo)
     
     
+async def fn_get_order_by_id(
+    order_id: str,
+    order_repo: OrdersRepository,
+) -> Optional[OrderModel]:
+    
+    return await crud.fn_get_order_by_id(order_id, order_repo)

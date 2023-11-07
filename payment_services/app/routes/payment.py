@@ -1,11 +1,12 @@
 from typing import List, Optional, Any
 
 from fastapi import APIRouter, Depends, Request, status
+from fastapi.background import BackgroundTasks
 
 from app.apis.orders import (
     fn_create_order, 
 #     fn_get_products,
-#     fn_get_product_by_id,
+    fn_get_order_by_id,
 #     fn_delete_product_by_id
 )
 
@@ -50,6 +51,7 @@ router.prefix = "/api/payment"
 )
 async def create_order(
     request: Request,
+    background_task: BackgroundTasks,
     product_id: str,
     order_repo: OrdersRepository= Depends(
         get_repository(OrdersRepository)
@@ -58,29 +60,29 @@ async def create_order(
     """
         Create new order.
     """
-    return await fn_create_order(product_id, order_repo)
+    return await fn_create_order(product_id, order_repo, background_task)
 
 
-# @router.get(
-#     "/products/{id}",
-#     tags=["payment-services"],
-#     name="payment:unique:product",
-#     operation_id="payment_product_by_id",
-#     status_code=status.HTTP_200_OK,
-# )
-# async def get_product_by_id(
-#     request: Request,
-#     id: str,
-#     product_repo: ProductsRepository= Depends(
-#         get_repository(ProductsRepository)
-#     )
-#     )-> Optional[Product]:
-#     """
-#         Get a product by id.
-#     """
-#     result = await fn_get_product_by_id(id, product_repo)
+@router.get(
+    "/orders/{order_id}",
+    tags=["payment-services"],
+    name="payment:unique:order",
+    operation_id="payment_order_by_id",
+    status_code=status.HTTP_200_OK,
+)
+async def get_order_by_id(
+    request: Request,
+    order_id: str,
+    order_repo: OrdersRepository= Depends(
+        get_repository(OrdersRepository)
+    ),
+    )-> Optional[OrderModel]:
+    """
+        Get a order by id.
+    """
+    result = await fn_get_order_by_id(order_id, order_repo)
     
-#     return result
+    return result
 
 
 # @router.delete(
