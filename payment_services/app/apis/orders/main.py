@@ -21,6 +21,7 @@ from . import crud
 
 async def fn_create_order(
     product_id: str,
+    quantity: int,
     order_repo: OrdersRepository,
     background_task: BackgroundTasks,
 ) -> Optional[OrderModel]:

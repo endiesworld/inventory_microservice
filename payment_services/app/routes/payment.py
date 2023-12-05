@@ -53,6 +53,7 @@ async def create_order(
     request: Request,
     background_task: BackgroundTasks,
     product_id: str,
+    quantity: int,
     order_repo: OrdersRepository= Depends(
         get_repository(OrdersRepository)
     ),
@@ -60,7 +61,7 @@ async def create_order(
     """
         Create new order.
     """
-    return await fn_create_order(product_id, order_repo, background_task)
+    return await fn_create_order(product_id, quantity, order_repo, background_task)
 
 
 @router.get(
