@@ -7,7 +7,7 @@ from app.core.global_config import app_config
 
 # Get a Redis connection
 db_host, db_port = (app_config.REDIS_CONTAINER_NAME, app_config.REDIS_PORT)
-database = get_redis_connection(host=db_host, port=db_port, decode_responses=True)
+redis = get_redis_connection(host=db_host, port=db_port, decode_responses=True)
 
 COMMISSION = 0.05
 PRICE_FACTOR = 1.05
@@ -38,7 +38,7 @@ class NewOrderModel(HashModel):
     status: PaymentStatusEnum
         
     class Meta:
-            database = database
+            database = redis
 
 
 class OrderModel(NewOrder):

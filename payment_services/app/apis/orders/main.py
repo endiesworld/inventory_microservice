@@ -10,13 +10,13 @@ from app.models.domains.order import (
     NewOrderModel, 
     PaymentStatusEnum, 
     COMMISSION, 
-    PRICE_FACTOR
+    PRICE_FACTOR,
+    redis
 )
 from app.models.core import DeletedCount
 from app.db.repositories import OrdersRepository
 
 from . import crud
-
 
 
 async def fn_create_order(
@@ -29,7 +29,8 @@ async def fn_create_order(
     id = product_id
     
     response =  requests.get(f"http://inventory-services-backend:5000/api/inventory/products/{id}")
-    
+    print(f"Response from inventory: ", response)
+    # Remember to macth available quantity to order quantity
     if response.status_code == 200:
         product = response.json()
         new_order = NewOrderModel(
@@ -38,7 +39,7 @@ async def fn_create_order(
         price=product['price'],
         commission=COMMISSION*product['price'],
         total=PRICE_FACTOR*product['price'],
-        quantity=product['quantity'],
+        quantity=quantity,
         status=PaymentStatusEnum.pending,
     )
         order_model, order = await crud.fn_create_order(new_order, order_repo)
@@ -56,6 +57,8 @@ async def complete_order(order: NewOrderModel, order_repo:OrdersRepository):
     time.sleep(5)
     order.status = PaymentStatusEnum.completed
     await crud.fn_create_order(order, order_repo)
+    # print(order.dict())
+    redis.xadd("completed_order", order.dict(), "*")
     
     
 async def fn_get_order_by_id(
