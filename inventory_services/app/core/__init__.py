@@ -2,6 +2,8 @@ from typing import Callable
 
 from fastapi import FastAPI
 
+from app.apis.products.consumer import startup_event
+
 
 def create_start_app_handler(app: FastAPI) -> Callable:
     from app.db import connect_to_db
@@ -10,6 +12,11 @@ def create_start_app_handler(app: FastAPI) -> Callable:
         await connect_to_db(app)
 
     return start_app
+
+
+
+async def create_redis_payment_consumer():
+    await startup_event()
 
 
 # def create_stop_app_handler(app: FastAPI) -> Callable:

@@ -35,5 +35,4 @@ async def fn_delete_product_by_id(
     id: str,
     product_repo: ProductsRepository
 )-> Optional[DeletedCount]:
-    print("IN THE DELETS ROUTE==> MAIN")
     return await crud.fn_delete_product_by_id(id, product_repo)
