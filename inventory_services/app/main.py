@@ -140,10 +140,12 @@ app.add_event_handler("startup", setup_logging)
 app.add_event_handler("startup", create_start_app_handler(app))
 # app.add_event_handler("shutdown", create_stop_app_handler(app))
 
-# app.add_event_handler("startup", create_redis_payment_consumer())
-
+app.add_event_handler("startup", create_redis_payment_consumer)
+# create_redis_payment_consumer()
     
 app.add_event_handler("startup", application_module.mount(app))
-@app.on_event("startup")
-async def on_startup():
-    await create_redis_payment_consumer()
+
+# app.add_event_handler("startup", create_redis_payment_consumer(app))
+# @app.on_event("startup")
+# async def on_startup():
+#     await create_redis_payment_consumer()

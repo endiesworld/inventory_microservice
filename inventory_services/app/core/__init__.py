@@ -1,8 +1,9 @@
 from typing import Callable
+import asyncio
 
 from fastapi import FastAPI
 
-from app.apis.products.consumer import startup_event
+from app.apis.products.consumer import process_redis_stream
 
 
 def create_start_app_handler(app: FastAPI) -> Callable:
@@ -15,8 +16,8 @@ def create_start_app_handler(app: FastAPI) -> Callable:
 
 
 
-async def create_redis_payment_consumer():
-    await startup_event()
+def create_redis_payment_consumer():
+    asyncio.create_task(process_redis_stream())
 
 
 # def create_stop_app_handler(app: FastAPI) -> Callable:
