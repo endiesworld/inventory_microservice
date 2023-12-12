@@ -3,7 +3,7 @@ import asyncio
 
 from fastapi import FastAPI
 
-from app.apis.products.consumer import process_redis_stream
+from app.events.consumer import process_redis_stream
 
 
 def create_start_app_handler(app: FastAPI) -> Callable:
@@ -13,7 +13,6 @@ def create_start_app_handler(app: FastAPI) -> Callable:
         await connect_to_db(app)
 
     return start_app
-
 
 
 def create_redis_payment_consumer():
