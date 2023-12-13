@@ -27,7 +27,7 @@ async def fn_get_products(product_repo: ProductsRepository)-> Optional[List[Prod
 async def fn_get_product_by_id(
     id: str,
     product_repo: ProductsRepository
-)-> Optional[Product]:
+)-> List[Product]:
     
     return await crud.fn_get_product_by_id(id, product_repo)
 

@@ -1,10 +1,11 @@
 import logging
 import asyncio
-from fastapi import Depends
 from app.models.domains.products import redis
-from app.apis.products import fn_get_product_by_id
+
 from app.db.repositories import ProductsRepository
 from app.db.base import BaseRepository
+
+from app.apis.products import fn_get_product_by_id
 
 STREAM_KEY = 'completed_order'
 CONSUMER_GROUP_NAME = 'inventory-group'
@@ -13,7 +14,6 @@ CONSUMER_NAME = 'productt_payment_consumer_1'
 
 
 def get_repository(repo_type: BaseRepository) :
-    from app.models.domains.products import redis
     def get_repo(db: redis = redis):
         return repo_type(db)
 
@@ -42,8 +42,11 @@ async def process_redis_stream():
             for message in messages:
                 mess = message[1]
                 product_id = mess['product_id']
+                # Update the redis stream after reading the message
                 redis.xack(STREAM_KEY, CONSUMER_GROUP_NAME, message[0])
-                result = await fn_get_product_by_id(product_id, product_repo)
-                print("Inevtory Record: ", result)
+                # Fetch product from inventory db using product id
+                _, product = await fn_get_product_by_id(product_id, product_repo)
+                product.quantity = int(product.quantity) - int(mess['quantity'])
+                product.save()
         await asyncio.sleep(1)
         

@@ -19,7 +19,7 @@ class ProductsRepository(BaseRepository):
             quantity=product.quantity,
         )
     
-    def get_product_by_id(self, id: str)-> Product:
+    def get_product_by_id(self, id: str)-> List[Product]:
         try:
             product =  NewProductModel.get(id)
         except NotFoundError:
@@ -32,7 +32,7 @@ class ProductsRepository(BaseRepository):
             quantity=product.quantity,
         )
         
-        return product_
+        return (product_ , product)
         
     async def get_products(self):
         product_pks = NewProductModel.all_pks()

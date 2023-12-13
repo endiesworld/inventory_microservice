@@ -81,7 +81,7 @@ async def get_product_by_id(
     """
         Get a product by id.
     """
-    result = await fn_get_product_by_id(id, product_repo)
+    result, _ = await fn_get_product_by_id(id, product_repo)
     
     return result
 
