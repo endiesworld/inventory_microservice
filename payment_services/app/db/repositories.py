@@ -6,7 +6,6 @@ from app.db.base import BaseRepository
 from app.models.domains.order import NewOrderModel, OrderModel
 
 from app.models.exceptions.crud_exception import NotFoundException
-from app.models.core import DeletedCount
 
 
 class OrdersRepository(BaseRepository):
@@ -26,13 +25,13 @@ class OrdersRepository(BaseRepository):
         return (order_model, order)
 
 
-    def get_order_by_id(self, id: str)-> Optional[OrderModel]:
+    def get_order_by_id(self, id: str)-> List[OrderModel]:
         try:
             order =  NewOrderModel.get(id)
         except NotFoundError:
             raise NotFoundException(message="Sorry, no order with this Id was found.")
         
-        order = OrderModel(
+        order_ = OrderModel(
             id=order.pk,
             product_id=order.product_id,
             product_name=order.product_name,
@@ -43,4 +42,4 @@ class OrdersRepository(BaseRepository):
             status=order.status,
         )
         
-        return order
+        return (order_, order)

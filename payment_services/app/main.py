@@ -1,6 +1,6 @@
 import uuid
 
-from fastapi import FastAPI, HTTPException, Request, status
+from fastapi import FastAPI, Request, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -8,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 # USE THIS PIECE TO CONNECT TO AN EXTERNAL DATABASE
 from app.core import (
     create_start_app_handler,
+    create_redis_refund_consumer
     # create_stop_app_handler,
 )
 
@@ -139,5 +140,6 @@ app.add_event_handler("startup", setup_logging)
 app.add_event_handler("startup", create_start_app_handler(app))
 # app.add_event_handler("shutdown", create_stop_app_handler(app))
 
+app.add_event_handler("startup", create_redis_refund_consumer)
 
 app.add_event_handler("startup", application_module.mount(app))

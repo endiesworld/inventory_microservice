@@ -64,6 +64,6 @@ async def complete_order(order: NewOrderModel, order_repo:OrdersRepository):
 async def fn_get_order_by_id(
     order_id: str,
     order_repo: OrdersRepository,
-) -> Optional[OrderModel]:
+) -> List[OrderModel]:
     
     return await crud.fn_get_order_by_id(order_id, order_repo)

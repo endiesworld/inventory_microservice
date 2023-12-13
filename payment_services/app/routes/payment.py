@@ -5,9 +5,7 @@ from fastapi.background import BackgroundTasks
 
 from app.apis.orders import (
     fn_create_order, 
-#     fn_get_products,
-    fn_get_order_by_id,
-#     fn_delete_product_by_id
+    fn_get_order_by_id
 )
 
 from app.models.domains.order import NewOrder, OrderModel
@@ -81,7 +79,7 @@ async def get_order_by_id(
     """
         Get a order by id.
     """
-    result = await fn_get_order_by_id(order_id, order_repo)
+    result, _ = await fn_get_order_by_id(order_id, order_repo)
     
     return result
 

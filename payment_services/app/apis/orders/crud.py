@@ -15,6 +15,6 @@ async def fn_create_order(
 async def fn_get_order_by_id(
     id: str,
     order_repo: OrdersRepository,
-) -> Optional[OrderModel]:
+) -> List[OrderModel]:
     
     return  order_repo.get_order_by_id(id=id)

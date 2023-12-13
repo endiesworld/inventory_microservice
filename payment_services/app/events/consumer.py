@@ -1,18 +1,16 @@
-import logging
 import asyncio
-from app.models.domains.products import redis
+from app.models.domains.order import redis
 
-from app.db.repositories import ProductsRepository
+from app.db.repositories import OrdersRepository
 from app.db.base import BaseRepository
 
-from app.apis.products import fn_get_product_by_id
+from app.apis.orders import fn_get_order_by_id
 
-STREAM_KEY = 'completed_order'
-CONSUMER_GROUP_NAME = 'inventory-group'
+STREAM_KEY = 'refund_order'
+CONSUMER_GROUP_NAME = 'payment-group'
 FROM_ID = '>'
-CONSUMER_NAME = 'productt_payment_consumer_1'
+CONSUMER_NAME = 'payment_refund_consumer_1'
 
-REFUND_ORDER_KEY = 'refund_order'
 
 def get_repository(repo_type: BaseRepository) :
     def get_repo(db: redis = redis):
@@ -20,20 +18,20 @@ def get_repository(repo_type: BaseRepository) :
 
     return get_repo
 
-product_repo = get_repository(ProductsRepository)()
+order_repo = get_repository(OrdersRepository)()
 
 async def process_redis_stream():
     
     # Create the consumer group (and stream) if needed...
     try: 
         await redis.xgroup_create(STREAM_KEY, CONSUMER_GROUP_NAME, mkstream=True)
-        print('Created consumer group.')
+        print('Created payment refund group.')
     except Exception as e:
         print('Consumer group already exists, skipped creation.', str(e))
     
     while True:
         try:
-            print("Trying to fetch from redis stream....")
+            print("Trying to fetch failed order from redis stream....")
             reply = redis.xreadgroup(CONSUMER_GROUP_NAME, CONSUMER_NAME, {STREAM_KEY: FROM_ID}, None)
             print(reply)
         except Exception as e:
@@ -42,15 +40,13 @@ async def process_redis_stream():
         for _, messages in reply:
             for message in messages:
                 mess = message[1]
-                product_id = mess['product_id']
+                order_id = mess['id']
                 # Update the redis stream after reading the message
                 redis.xack(STREAM_KEY, CONSUMER_GROUP_NAME, message[0])
                 # Fetch product from inventory db using product id
-                try:
-                    _, product = await fn_get_product_by_id(product_id, product_repo)
-                    product.quantity = int(product.quantity) - int(mess['quantity'])
-                    product.save()
-                except Exception:
-                    redis.xadd(REFUND_ORDER_KEY,  mess, '*')
+                _, order = await fn_get_order_by_id(order_id, order_repo)
+                order.status = 'refunded'
+                order.save()
+                print(order)
         await asyncio.sleep(1)
         
