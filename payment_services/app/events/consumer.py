@@ -40,7 +40,8 @@ async def process_redis_stream():
         for _, messages in reply:
             for message in messages:
                 mess = message[1]
-                order_id = mess['id']
+                print("Failed Order:" ,mess)
+                order_id = mess['pk']
                 # Update the redis stream after reading the message
                 redis.xack(STREAM_KEY, CONSUMER_GROUP_NAME, message[0])
                 # Fetch product from inventory db using product id

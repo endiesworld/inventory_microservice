@@ -36,7 +36,11 @@ class ProductsRepository(BaseRepository):
         
     async def get_products(self):
         product_pks = NewProductModel.all_pks()
-        return [self.get_product_by_id(id=pk) for pk in product_pks]
+        product_list = []
+        for pk in product_pks:
+            product, _ = self.get_product_by_id(id=pk) 
+            product_list.append( product)
+        return product_list
     
     def delete_product_by_id(self, id:str)->Optional[DeletedCount]:
         deleted = NewProductModel.delete(id)

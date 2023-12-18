@@ -4,6 +4,7 @@ from typing import Optional, List
 import requests
 
 from fastapi.background import BackgroundTasks
+from app.models.exceptions.crud_exception import NotFoundException
 
 from app.models.domains.order import (
     OrderModel, 
@@ -49,8 +50,8 @@ async def fn_create_order(
         return order_model
     
     else:
-        return {"error": "Failed to fetch data from the API"}
-    
+        raise NotFoundException(message="Sorry, no product with this Id was found.")
+        
 
 
 async def complete_order(order: NewOrderModel, order_repo:OrdersRepository):

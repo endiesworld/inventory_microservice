@@ -48,8 +48,11 @@ async def process_redis_stream():
                 # Fetch product from inventory db using product id
                 try:
                     _, product = await fn_get_product_by_id(product_id, product_repo)
-                    product.quantity = int(product.quantity) - int(mess['quantity'])
-                    product.save()
+                    if int(product.quantity) > int(mess['quantity']):
+                        product.quantity = int(product.quantity) - int(mess['quantity'])
+                        product.save()
+                    else:
+                        redis.xadd(REFUND_ORDER_KEY,  mess, '*')
                 except Exception:
                     redis.xadd(REFUND_ORDER_KEY,  mess, '*')
         await asyncio.sleep(1)
