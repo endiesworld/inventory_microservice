@@ -40,7 +40,6 @@ async def process_redis_stream():
         for _, messages in reply:
             for message in messages:
                 mess = message[1]
-                print("Failed Order:" ,mess)
                 order_id = mess['pk']
                 # Update the redis stream after reading the message
                 redis.xack(STREAM_KEY, CONSUMER_GROUP_NAME, message[0])
@@ -48,6 +47,5 @@ async def process_redis_stream():
                 _, order = await fn_get_order_by_id(order_id, order_repo)
                 order.status = 'refunded'
                 order.save()
-                print(order)
         await asyncio.sleep(1)
         
